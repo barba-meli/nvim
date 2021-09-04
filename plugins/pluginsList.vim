@@ -14,5 +14,6 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend upda
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-lua/completion-nvim'
+Plug 'creativenull/diagnosticls-configs-nvim'
 
 call plug#end()

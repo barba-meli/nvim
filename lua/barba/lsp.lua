@@ -1,23 +1,45 @@
 
--- " bash comment css dockerfile go html javascript json jsonc lua php regex scss tsx typescript vim vue   
+-- " bash comment css dockerfile go html javascript json jsonc lua php regex scss tsx typescript vim vue
 local sumneko_root_path = '/home/barba/.config/nvim/lsp/lua-language-server'
 local sumneko_binary = sumneko_root_path .. "/bin/Linux/lua-language-server"
 
 local nvim_lsp = require('lspconfig')
 
+vim.lsp.handlers["textDocument/formatting"] = function(err, _, result, _, bufnr)
+    if err ~= nil or result == nil then
+        return
+    end
+    if not vim.api.nvim_buf_get_option(bufnr, "modified") then
+        local view = vim.fn.winsaveview()
+        vim.lsp.util.apply_text_edits(result, bufnr)
+        vim.fn.winrestview(view)
+        if bufnr == vim.api.nvim_get_current_buf() then
+            vim.api.nvim_command("noautocmd :update")
+        end
+    end
+end
+
+
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
 local on_attach = function(client, bufnr)
+  if client.resolved_capabilities.document_formatting then
+        vim.api.nvim_command [[augroup Format]]
+        vim.api.nvim_command [[autocmd! * <buffer>]]
+        vim.api.nvim_command [[autocmd BufWritePost <buffer> lua vim.lsp.buf.formatting()]]
+        vim.api.nvim_command [[augroup END]]
+    end
+
   local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
   local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
 
   -- Enable completion triggered by <c-x><c-o>
-  buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+  buf_set_option('omnifunc', 'v=lua.vim.lsp.omnifunc')
 
   -- Mappings.
   local opts = { noremap=true, silent=true }
 
-  -- See `:help vim.lsp.*` for documentation on any of the below functions
+  -- See `=help vim.lsp.*` for documentation on any of the below functions
   buf_set_keymap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
   buf_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
   buf_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
@@ -73,5 +95,38 @@ require'lspconfig'.sumneko_lua.setup {
             },
         },
     },
+  }
+
+local dlsconfig = require 'diagnosticls-configs'
+local eslint = require 'diagnosticls-configs.linters.eslint'
+local prettier = require 'diagnosticls-configs.formatters.prettier'
+
+dlsconfig.setup {
+  ['javascript'] = {
+    linter = eslint,
+    formatter = prettier
+  },
+  ['typescript'] = {
+    linter = eslint,
+    formatter = prettier
+  },
+  ['javascriptreact'] = {
+    linter = eslint,
+    formatter = prettier
+  }
 }
+
+dlsconfig.init {
+  -- Your custom attach function
+  on_attach = on_attach,
+  -- apply default config for supported linters and formatters
+  default_config = true,
+  -- default to true, use false if you don't want to setup formatters by default
+  format = true
+}
+
+
+
+-- vim.api.nvim_command[[autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()]]
+
 
