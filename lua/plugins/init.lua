@@ -62,11 +62,23 @@ return require('packer').startup(function()
         requires = {
             "quangnguyen30192/cmp-nvim-ultisnips", "hrsh7th/cmp-vsnip", "hrsh7th/cmp-nvim-lua", "hrsh7th/cmp-path", 'hrsh7th/vim-vsnip',
             'hrsh7th/vim-vsnip-integ', 'honza/vim-snippets', 'SirVer/ultisnips', "hrsh7th/cmp-buffer", 'hrsh7th/cmp-nvim-lsp',
-            'saadparwaiz1/cmp_luasnip'
+            'saadparwaiz1/cmp_luasnip', 'golang/vscode-go', "rafamadriz/friendly-snippets"
 
         },
         config = function()
             require('plugins.completion')
+        end
+    }
+    use {
+        "windwp/nvim-autopairs",
+        config = function()
+            require("plugins.pairs")
+        end
+    }
+    use {
+        "windwp/nvim-ts-autotag",
+        config = function()
+            require("plugins.tags")
         end
     }
     use {
@@ -75,4 +87,30 @@ return require('packer').startup(function()
             require('plugins.formatter')
         end
     }
+    use {
+        'norcalli/nvim-colorizer.lua',
+        config = function()
+            require("plugins.colorizer")
+        end
+    }
+    use {
+        'unblevable/quick-scope',
+        config = function()
+            require("plugins.quickscope")
+        end
+    }
+    use {
+        'mhinz/vim-startify',
+        config = function()
+            require("plugins.startify")
+        end
+    }
+
+    -- use {
+    --     "justinmk/vim-sneak",
+    --     config = function()
+    --         require("plugins.sneak")
+    --     end
+    -- }
+
 end)

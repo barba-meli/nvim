@@ -15,10 +15,12 @@ local efm_languages = {
     yaml = {prettier},
     json = {prettier},
     markdown = {prettier},
-    javascript = {eslint, prettier},
-    javascriptreact = {eslint, prettier},
-    typescript = {eslint, prettier},
-    typescriptreact = {eslint, prettier},
+    javascript = {eslint},
+    javascriptreact = {eslint},
+    ["javascript.jsx"] = {eslint},
+    typescript = {eslint},
+    ["typescript.tsx"] = {eslint},
+    typescriptreact = {eslint},
     css = {prettier},
     scss = {prettier},
     sass = {prettier},
@@ -33,7 +35,7 @@ local efm_languages = {
 lsp_config.efm.setup({
     capabilities = capabilities,
     cmd = {"efm-langserver", "-c", efm_config, "-logfile", efm_log_dir .. "efm.log"},
-    filetype = {'javascript', 'javascriptreact', 'typescript', 'typescriptreact', 'lua'},
+    filetype = {"javascript", "javascriptreact", "javascript.jsx", "typescript", "typescript.tsx", "typescriptreact", 'lua'},
     on_attach = on_attach,
     root_dir = function(fname)
         local path = fname:gsub('Área de Trabalho', 'Desktop')
@@ -42,4 +44,3 @@ lsp_config.efm.setup({
     init_options = {documentFormatting = false},
     settings = {rootMarkers = efm_root_markers, languages = efm_languages}
 })
-

@@ -1,3 +1,7 @@
+local function replaceDesktopName(name)
+    return name:gsub('Área de Trabalho', 'Desktop')
+end
+
 local prettier = function()
     local path = vim.api.nvim_buf_get_name(0):gsub('Área de Trabalho', 'Desktop')
     return {exe = "prettier", args = {"--stdin-filepath", path}, stdin = true, cwd = vim.fn.expand("%:p:h")}
@@ -5,7 +9,7 @@ end
 
 local eslint = function()
     local path = vim.api.nvim_buf_get_name(0):gsub('Área de Trabalho', 'Desktop')
-    return {exe = "eslint_d", args = {"--stdin-filename", path}, stdin = false}
+    return {exe = "eslint_d", args = {"--stdin-filename", path, "--fix"}, stdin = false}
 end
 
 local lua_format = function()
@@ -18,12 +22,13 @@ local lua_format = function()
 end
 
 require('formatter').setup({
+
     logging = false,
     filetype = {
-        javascript = {prettier},
-        javascriptreact = {prettier},
+        javascript = {eslint, prettier},
+        javascriptreact = {eslint, prettier},
         typescript = {eslint, prettier},
-        typescriptreact = {prettier},
+        typescriptreact = {eslint, prettier},
         css = {prettier},
         less = {prettier},
         sass = {prettier},
