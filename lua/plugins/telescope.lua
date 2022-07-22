@@ -52,10 +52,20 @@ require('telescope').setup {
     }
 }
 
-local options = {noremap = true}
+local wk = require('plugins.whichkey')
 
-vim.api.nvim_set_keymap('n', '<leader>ff', '<cmd>lua require("telescope.builtin").find_files()<CR>', options)
-vim.api.nvim_set_keymap('n', '<leader>fg', '<cmd>lua require("telescope.builtin").live_grep()<CR>', options)
-vim.api.nvim_set_keymap('n', '<leader>fb', '<cmd>lua require("telescope.builtin").buffers()<CR>', options)
-vim.api.nvim_set_keymap('n', '<leader>fh', '<cmd>lua require("telescope.builtin").help_tags()<CR>', options)
-vim.api.nvim_set_keymap('n', '<leader>fl', '<cmd>lua require("telescope.builtin").lsp_references()<CR>', options)
+wk.register({
+    f = {
+        name = "Finder",
+        f = {
+            "<cmd>lua require('telescope.builtin').find_files({    find_command = { 'rg', '--files', '--iglob', '!.git', '--hidden' },})<CR>",
+            "Find files"
+        },
+        g = {'<cmd>lua require("telescope.builtin").live_grep()<CR>', "Live grep"},
+        b = {'<cmd>lua require("telescope.builtin").buffers()<CR>', "Find in buffers"},
+        h = {'<cmd>lua require("telescope.builtin").help_tags()<CR>', "Help tags"},
+        l = {'<cmd>lua require("telescope.builtin").lsp_references()<CR>', "Find ref"},
+        d = {'<cmd>Telescope diagnostics<CR>', "List errors"}
+
+    }
+}, {prefix = "<leader>", mode = "n"})

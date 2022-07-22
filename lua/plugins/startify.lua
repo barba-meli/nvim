@@ -24,4 +24,4 @@ g.startify_lists = {
     {type = 'sessions', header = {'   Sessions'}}, {type = 'bookmarks', header = {'   Bookmarks'}}
 }
 
-g.startify_bookmarks = {{d = '~/.config/nvim/'}, {r = '~/Desktop/ramper_repo/'}, {p = '~/Desktop/projetos/'}}
+g.startify_bookmarks = {{d = '~/.config/nvim/'}, {r = '~/Desktop/ramper_repo/'}, {p = '~/Desktop/projetos/'}, {e = '~/Desktop/misc/entrevistas/'}}

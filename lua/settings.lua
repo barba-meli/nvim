@@ -1,9 +1,7 @@
 local apply_options = require('utils').apply_options
 local apply_globals = require('utils').apply_globals
-local add = require('utils').add
-local concat = require('utils').concat
 
-apply_globals({mapleader = " "})
+apply_globals({mapleader = " ", loaded_python_provider = 0, python3_host_prog = "/usr/bin/python3.8"})
 
 apply_options({
     compatible = false,

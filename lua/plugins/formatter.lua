@@ -1,7 +1,3 @@
-local function replaceDesktopName(name)
-    return name:gsub('Área de Trabalho', 'Desktop')
-end
-
 local prettier = function()
     local path = vim.api.nvim_buf_get_name(0):gsub('Área de Trabalho', 'Desktop')
     return {exe = "prettier", args = {"--stdin-filepath", path}, stdin = true, cwd = vim.fn.expand("%:p:h")}

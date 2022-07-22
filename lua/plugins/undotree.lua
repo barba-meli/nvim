@@ -1,3 +1,3 @@
-local options = {noremap = true}
+local wk = require('plugins.whichkey')
 
-vim.api.nvim_set_keymap('n', '<leader>u', '<cmd>UndotreeToggle<CR>', options)
+wk.register({u = {'<cmd>UndotreeToggle<CR>', "Undotree"}}, {prefix = "<leader>", mode = "n"})

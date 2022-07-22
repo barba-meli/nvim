@@ -35,12 +35,12 @@ end
 
 -- Buffer local keymap
 function M.buf_map(...)
-    vim.api.nvim_buf_set_keymap(bufnr, ...)
+    vim.api.nvim_buf_set_keymap(0, ...)
 end
 
 -- Buffer local option
 function M.buf_option(...)
-    vim.api.nvim_buf_set_option(bufnr, ...)
+    vim.api.nvim_buf_set_option(0, ...)
 end
 
 -- Check whether the current buffer is empty
@@ -51,6 +51,11 @@ end
 -- Check if the windows width is greater than a given number of columns
 function M.has_width_gt(cols)
     return vim.fn.winwidth(0) / 2 > cols
+end
+
+function M.array_includes(tbl, item)
+    for _, value in pairs(tbl) do if value == item then return true end end
+    return false
 end
 
 return M

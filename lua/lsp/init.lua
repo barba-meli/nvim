@@ -1,4 +1,3 @@
-local lsp_config = require("lspconfig")
 local lsp = vim.lsp
 local fn = vim.fn
 
