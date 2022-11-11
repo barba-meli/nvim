@@ -9,4 +9,3 @@ vim.api.nvim_exec([[
 ]], true)
 
 apply_colorscheme("gruvbox", "dark")
-

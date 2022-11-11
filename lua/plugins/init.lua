@@ -21,9 +21,11 @@ return require('packer').startup(function()
     }
 
     use {
-        "preservim/nerdtree",
+        -- 'SidOfc/carbon.nvim',
+        -- "preservim/nerdtree",
+        'nvim-tree/nvim-tree.lua',
         config = function()
-            require('plugins.nerdtree')
+            require('plugins.filetree')
         end
     }
 
@@ -142,15 +144,15 @@ return require('packer').startup(function()
         end
     }
 
-    use {
-        "rcarriga/vim-ultest",
-        requires = {"vim-test/vim-test"},
-        run = ":UpdateRemotePlugins",
-
-        config = function()
-            require("plugins.vim_test")
-        end
-    }
+    --    use {
+    --        "rcarriga/vim-ultest",
+    --        requires = {"vim-test/vim-test"},
+    --        run = ":UpdateRemotePlugins",
+    --
+    --        config = function()
+    --            require("plugins.vim_test")
+    --        end
+    --    }
     -- use {
     --     -- "David-Kunz/jester",
     --     "vim-test/vim-test",

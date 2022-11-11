@@ -41,11 +41,17 @@ vim.lsp.handlers["textDocument/formatting"] = function(err, _, result, _, bufnr)
 end
 
 local function on_attach(client)
-    if client.resolved_capabilities.document_formatting then
-        vim.api.nvim_command [[augroup Format]]
-        vim.api.nvim_command [[autocmd! * <buffer>]]
-        vim.api.nvim_command [[autocmd BufWritePost <buffer> lua vim.lsp.buf.formatting_seq_sync()]]
-        vim.api.nvim_command [[augroup END]]
+    if client.server_capabilities.documentFormattingProvider then
+        -- vim.api.nvim_command [[augroup Format]]
+        -- vim.api.nvim_command [[autocmd! * <buffer>]]
+        -- vim.api.nvim_command [[autocmd BufWritePost <buffer> lua vim.lsp.buf.format()]]
+        -- vim.api.nvim_command [[augroup END]]
+        vim.api.nvim_exec([[
+          augroup Format
+          autocmd! * <buffer>
+            autocmd BufWritePost <buffer> lua vim.lsp.buf.format()
+          augroup END
+      ]], true)
     end
 
     buf_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
@@ -65,11 +71,11 @@ local function on_attach(client)
     buf_map('n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
     buf_map('n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
     buf_map('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-    buf_map('n', '<leader>d', '<cmd>lua vim.diagnostic.show_line_diagnostics({ show_header = false })<CR>', opts)
+    buf_map('n', '<leader>d', '<cmd>lua vim.diagnostic.open_float({scope="buffer"})<CR>', opts)
     buf_map('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
     buf_map('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
     buf_map('n', '<leader>q', '<cmd>lua vim.diagnostic.set_loclist()<CR>', opts)
-    buf_map('n', '<leader>f', '<cmd>lua vim.lsp.buf.formatting_seq_sync()<CR>', opts)
+    buf_map('n', '<leader>f', '<cmd>lua vim.lsp.buf.format()<CR>', opts)
     buf_map('i', '<Tab>', 'pumvisible() ? "<C-n>" : "<Tab>"', {expr = true, noremap = true})
     buf_map('i', '<S-Tab>', 'pumvisible() ? "<C-p>" : "<S-Tab>"', {expr = true, noremap = true})
 end

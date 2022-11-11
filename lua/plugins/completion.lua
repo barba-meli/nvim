@@ -46,8 +46,8 @@ cmp.setup {
     completion = {autocomplete = {cmp.TriggerEvent.TextChanged}, completeopt = 'menu,menuone,noinsert'},
     sources = cmp.config.sources({
         {name = 'ultisnips'}, {name = "vsnip"}, {name = 'path'}, -- {name = 'nvim_lua'},
-        {name = 'nvim_lsp'}, -- {name = 'luasnip'},
-        {name = 'buffer'}
+        {name = 'nvim_lsp'} -- {name = 'luasnip'},
+        -- {name = 'buffer'}
     }),
     preselect = false
 }
