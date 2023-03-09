@@ -1,163 +1,117 @@
-vim.cmd [[packadd packer.nvim]]
-local use = require("packer").use
+-- Install packer
+local install_path = vim.fn.stdpath 'data' .. '/site/pack/packer/start/packer.nvim'
+if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
+  vim.fn.system { 'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path }
+  vim.cmd [[packadd packer.nvim]]
+end
 
-return require('packer').startup(function()
-    use 'wbthomason/packer.nvim'
+require('packer').startup(function(use)
+  -- Packer can manage itself
+  use 'wbthomason/packer.nvim'
 
-    use {'gruvbox-community/gruvbox'}
+  use { 'gruvbox-community/gruvbox' }
 
-    use {
-        'tpope/vim-commentary',
-        config = function()
-            require('plugins.commentary')
-        end
-    }
+  -- used to verify startup time, run :StartupTime
+  -- use {'dstein64/vim-startuptime'}
 
-    use {
-        'mbbill/undotree',
-        config = function()
-            require('plugins.undotree')
-        end
-    }
+  use {
+    'tpope/vim-fugitive',
+  }
+  use {
+    'lewis6991/gitsigns.nvim',
+    -- tag = 'release' -- To use the latest release (do not use this if you run Neovim nightly or dev builds!)
+    config = function()
+      require("plugins.gitsigns")
+    end
+  }
+  -- LSP Configuration & Plugins
+  use {
+    'neovim/nvim-lspconfig',
+    requires = { 'williamboman/mason.nvim', 'williamboman/mason-lspconfig.nvim' },
+    config = function()
+      require("lsp")
+    end
+  }
 
-    use {
-        -- 'SidOfc/carbon.nvim',
-        -- "preservim/nerdtree",
-        'nvim-tree/nvim-tree.lua',
-        config = function()
-            require('plugins.filetree')
-        end
-    }
+  use { 'tpope/vim-commentary' }
 
-    use {'tiagofumo/vim-nerdtree-syntax-highlight'}
+  use { 'mbbill/undotree' }
 
-    use {'folke/which-key.nvim'}
+  use { 'folke/which-key.nvim' }
 
-    use {
-        'neovim/nvim-lspconfig',
-        config = function()
-            require('lsp')
-        end
-    }
+  use {
+    'nvim-tree/nvim-tree.lua',
+    requires = {
+      'nvim-tree/nvim-web-devicons' -- optional, for file icons
+    },
+    config = function()
+      require('plugins.filetree')
+    end
+  }
 
-    use {
-        'nvim-treesitter/nvim-treesitter',
-        requires = {
-            'nvim-treesitter/nvim-treesitter-refactor', {
-                'nvim-treesitter/completion-treesitter',
-                run = function()
-                    vim.cmd [[TSUpdate]]
-                end
-            }
-        },
-        config = function()
-            require('plugins.treesitter')
-        end
-    }
-
-    use {
-        'nvim-telescope/telescope.nvim',
-        requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}},
-        config = function()
-            require('plugins.telescope')
-        end
-    }
-
-    use {'L3MON4D3/LuaSnip'}
-
-    use {
-        "hrsh7th/nvim-cmp",
-        requires = {
-            -- "quangnguyen30192/cmp-nvim-ultisnips",
-            "hrsh7th/cmp-vsnip", -- "hrsh7th/cmp-nvim-lua",
-            "hrsh7th/cmp-path", 'hrsh7th/vim-vsnip', 'hrsh7th/vim-vsnip-integ', 'honza/vim-snippets', -- 'SirVer/ultisnips',
-            "hrsh7th/cmp-buffer", 'hrsh7th/cmp-nvim-lsp', 'saadparwaiz1/cmp_luasnip' -- 'golang/vscode-go', "rafamadriz/friendly-snippets"
-
-        },
-        config = function()
-            require('plugins.completion')
-        end
-    }
-
-    use {
-        "windwp/nvim-autopairs",
-        config = function()
-            require("plugins.pairs")
-        end
-    }
-
-    use {
-        "windwp/nvim-ts-autotag",
-        config = function()
-            require("plugins.tags")
-        end
-    }
-
-    use {
-        'mhartington/formatter.nvim',
-        config = function()
-            require('plugins.formatter')
-        end
-    }
-
-    use {
-        'norcalli/nvim-colorizer.lua',
-        config = function()
-            require("plugins.colorizer")
-        end
-    }
-
-    use {
-        'unblevable/quick-scope',
-        config = function()
-            require("plugins.quickscope")
-        end
-    }
-
-    use {
-        'mhinz/vim-startify',
-        config = function()
-            require("plugins.startify")
-        end
-    }
-
-    use {
-        "mfussenegger/nvim-dap",
-        opt = true,
-        event = "BufReadPre",
-        module = {"dap"},
-        wants = {"nvim-dap-virtual-text", "nvim-dap-ui", "which-key.nvim"},
-        requires = {
-            "theHamsta/nvim-dap-virtual-text", "rcarriga/nvim-dap-ui", "mfussenegger/nvim-dap-python", "nvim-telescope/telescope-dap.nvim",
-            {"leoluz/nvim-dap-go", module = "dap-go"}, {"jbyuki/one-small-step-for-vimkind", module = "osv"},
-            {'puremourning/vimspector', module = "vimspector"}
-        },
-        config = function()
-            require("plugins.dap").setup()
-        end
-    }
-
-    use {
-        "szw/vim-maximizer",
-        config = function()
-            require("plugins.maximizer")
-        end
-    }
-
-    --    use {
-    --        "rcarriga/vim-ultest",
-    --        requires = {"vim-test/vim-test"},
-    --        run = ":UpdateRemotePlugins",
-    --
-    --        config = function()
-    --            require("plugins.vim_test")
-    --        end
-    --    }
-    -- use {
-    --     -- "David-Kunz/jester",
-    --     "vim-test/vim-test",
-    --     config = function()
-    --         require("plugins.vim_test")
+  use {
+    'nvim-treesitter/nvim-treesitter',
+    run = function()
+      pcall(require('nvim-treesitter.install').update { with_sync = true })
+    end,
+    -- requires = {
+    --   'nvim-treesitter/nvim-treesitter-refactor', {
+    --     'nvim-treesitter/completion-treesitter',
+    --     run = function()
+    --       vim.cmd [[TSUpdate]]
     --     end
-    -- }
+    --   }
+    -- },
+    config = function()
+      require('plugins.treesitter')
+    end
+  }
+
+  use { -- Additional text objects via treesitter
+    'nvim-treesitter/nvim-treesitter-textobjects',
+    after = 'nvim-treesitter',
+  }
+
+  use {
+    'nvim-telescope/telescope.nvim',
+    requires = { { 'nvim-lua/popup.nvim' }, { 'nvim-lua/plenary.nvim' } },
+    config = function()
+      require('plugins.telescope')
+    end
+  }
+
+  use {
+    "hrsh7th/nvim-cmp",
+    requires = {
+      'L3MON4D3/LuaSnip', 'saadparwaiz1/cmp_luasnip', "hrsh7th/cmp-path", "hrsh7th/cmp-buffer", 'hrsh7th/cmp-nvim-lsp',
+      'saadparwaiz1/cmp_luasnip'
+    },
+    config = function()
+      require('plugins.completion')
+    end
+  }
+
+  use { 'nvim-treesitter/nvim-treesitter-context' }
+
+  use {
+    "windwp/nvim-autopairs",
+    config = function()
+      require("plugins.pairs")
+    end
+  }
+
+  use { "windwp/nvim-ts-autotag",
+    after = 'nvim-treesitter',
+  }
+
+
+
+  -- use {
+  --   'mhartington/formatter.nvim',
+  --   config = function()
+  --     require('plugins.formatter')
+  --   end
+  -- }
+
+  use { 'norcalli/nvim-colorizer.lua' }
 end)

@@ -1,4 +1,4 @@
-require("opt")
+-- require("opt")
 require("settings")
 require("mappings")
 require("plugins")

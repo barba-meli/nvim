@@ -1,5 +1,4 @@
 require'colorizer'.setup({'css', "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescript.tsx", "typescriptreact", "lua"}, {
-
     RGB = true, -- #RGB hex codes
     RRGGBB = true, -- #RRGGBB hex codes
     names = true, -- "Name" codes like Blue

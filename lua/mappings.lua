@@ -1,4 +1,5 @@
 local wk = require('plugins.whichkey')
+
 local map = require('utils').map
 
 map('t', '<leader>cc', "<C-\\><C-n><cr>")
